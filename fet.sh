@@ -202,6 +202,23 @@ elif v=/System/Library/CoreServices/SystemVersion.plist; [ -f "$v" ]; then
 				ID=${line#*>}
 				# Remove the other side of the XML tag, and insert the actual OS name
 				ID="MacOS ${ID%<*}"
+
+				host=$(hostname)
+
+				# Get the uptime in seconds
+				up=$(uptime | awk '{print $3" "$4}' | sed 's/,//g')
+
+				# CPU info
+				vendor=$(sysctl -n machdep.cpu.brand_string | awk '{print $1}')
+				cpu=" $(sysctl -n machdep.cpu.brand_string | awk '{$1=""; print $0}' | xargs)"
+
+				mem="$(bc <<< "scale=2; $(sysctl -n hw.memsize_usable)/1024/1024/1024") GB"
+
+				kernel=$(sysctl -n kern.osrelease)
+
+				[ -d /opt/homebrew/Cellar ] && set -- /opt/homebrew/Cellar/* && pkgs=$#
+				[ -d /opt/homebrew/Caskroom ] && set -- /opt/homebrew/Caskroom/* && pkgs=$((pkgs + $#))
+
 				# We got the info we want, end the loop.
 				break
 		esac
