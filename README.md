@@ -2,7 +2,7 @@
 <h1>fet.sh</h1>
 a fetch written in POSIX shell with no external commands
 <br>
-<img src="screenshot.png" width="512rem">
+<img src="screenshot.png" width="1024rem">
 </div>
 
 ### Installing
